@@ -1,6 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, ScrollView, Button, Linking } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome5';
+import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+
 
 export default function App() {
 
@@ -9,7 +11,10 @@ export default function App() {
         Linking.openURL("mailto:teste@gmail.com")
     }
 
+
 return (
+    <SafeAreaProvider>
+        <SafeAreaView edges={['bottom']}>
 <ScrollView>
         <View style={styles.container}>
 
@@ -62,10 +67,12 @@ return (
     neque viverra justo. Malesuada pellentesque elit eget gravida.
     Vitae nunc sed velit dignissim sodales ut eu sem integer.
   </Text>
+  <StatusBar style="light" />
 
-
-            </View>
-            </ScrollView>
+    </View>
+    </ScrollView>
+    </SafeAreaView>
+    </SafeAreaProvider>
     );
 }
 
