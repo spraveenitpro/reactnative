@@ -10,7 +10,6 @@ import {
 } from 'react-native'
 import FontAwesome6 from '@expo/vector-icons/FontAwesome5'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
-import ProjectCard from './ProjectCard'
 import Bolt12 from './Bolt12'
 
 export default function App() {
@@ -82,48 +81,6 @@ export default function App() {
                         {renderIcons()}
 
                         <Button title="Contact me" onPress={onContactMe} />
-
-                        <Text
-                            style={{
-                                padding: 10,
-                                fontSize: 16,
-                                lineHeight: 20,
-                            }}
-                        >
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit.
-                        </Text>
-                        <Text
-                            style={{
-                                fontWeight: 'bold',
-                                fontSize: 18,
-                                marginTop: 20,
-                            }}
-                        >
-                            <ScrollView
-                                horizontal
-                                showsHorizontalScrollIndicator={false}
-                                contentContainerStyle={{ gap: 10, padding: 10 }}
-                            >
-                                <ProjectCard
-                                    name="Apple Cards"
-                                    // @ts-ignore
-                                    coverImage={require('./assets/projects/project1.jpeg')}
-                                />
-                                <ProjectCard
-                                    name="Trello"
-                                    coverImage={require('./assets/projects/project2.jpeg')}
-                                />
-                                <ProjectCard
-                                    name="Flappy Bird"
-                                    coverImage={require('./assets/projects/project3.jpeg')}
-                                />
-                                <ProjectCard
-                                    name="Todo App"
-                                    coverImage={require('./assets/projects/project4.jpeg')}
-                                />
-                            </ScrollView>
-                        </Text>
                         <Bolt12 />
                         <StatusBar style="light" />
                     </View>
