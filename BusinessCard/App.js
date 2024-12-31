@@ -50,7 +50,6 @@ export default function App() {
             </View>
         )
     }
-    console.log()
     return (
         <SafeAreaProvider>
             <SafeAreaView edges={['top']}>
