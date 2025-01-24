@@ -1,19 +1,18 @@
 import { View, Text, StyleSheet } from 'react-native';
-import QuestionCard from '../components/QuestionCard';
 
-export default function QuizScreen() {
+export default function AnswerOption() {
     return (
         <View style={styles.container}>
-            <QuestionCard />
+            <Text>Answer Option</Text>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#FDFEF4',
-        flex: 1,
-        justifyContent: 'center',
+        borderWidth: 1,
+        borderColor: 'lightgray',
         padding: 20,
+        borderRadius: 100,
     }
 })
