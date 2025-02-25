@@ -26,7 +26,7 @@ export default function QuizScreen() {
                     <FontAwesome6
                         name="arrow-right-long"
                         size={16}
-                        color="white"
+                        color="white    "
                         style={styles.buttonIcon}
                     />
                 </Pressable>
