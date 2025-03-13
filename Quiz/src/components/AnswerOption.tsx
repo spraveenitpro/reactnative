@@ -1,23 +1,38 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, Pressable } from 'react-native';
 
 type AnswerOption = {
-    option: string;
-    isSelected?: boolean;
+	option: string;
+	isSelected?: boolean;
+	onPress: (option: string) => void;
 };
 
-export default function AnswerOption({ option, isSelected }: AnswerOption) {
-    return (
-        <View style={styles.container}>
-            <Text>{isSelected ? 'Selected' : '-'}</Text>
-        </View>
-    );
+export default function AnswerOption({
+	option,
+	isSelected,
+	onPress,
+}: AnswerOption) {
+	return (
+		<Pressable
+			onPress={() => onPress(option)}
+			style={[
+				styles.container,
+				isSelected && {
+					backgroundColor: '#E1F313',
+					borderColor: '#E1F313',
+				},
+			]}
+		>
+			<Text>{option}</Text>
+		</Pressable>
+	);
 }
 
 const styles = StyleSheet.create({
-    container: {
-        borderWidth: 1,
-        borderColor: 'lightgray',
-        padding: 20,
-        borderRadius: 100,
-    },
+	container: {
+		//backgroundColor: '#E1F313',
+		borderWidth: 1,
+		borderColor: 'lightgray',
+		padding: 20,
+		borderRadius: 100,
+	},
 });
