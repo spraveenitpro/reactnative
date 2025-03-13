@@ -2,14 +2,15 @@ import { View, Text, StyleSheet } from 'react-native';
 
 type AnswerOption = {
     option: string;
-}
+    isSelected?: boolean;
+};
 
-export default function AnswerOption({ option }: AnswerOption) {
+export default function AnswerOption({ option, isSelected }: AnswerOption) {
     return (
         <View style={styles.container}>
-            <Text>{option}</Text>
+            <Text>{isSelected ? 'Selected' : '-'}</Text>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -18,5 +19,5 @@ const styles = StyleSheet.create({
         borderColor: 'lightgray',
         padding: 20,
         borderRadius: 100,
-    }
-})
+    },
+});

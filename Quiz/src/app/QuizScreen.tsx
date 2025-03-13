@@ -3,7 +3,7 @@ import QuestionCard from '../components/QuestionCard';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6'
 
 import questions from '../questions'
-const question = questions[3];
+const question = questions[0];
 
 export default function QuizScreen() {
     //console.log(question);

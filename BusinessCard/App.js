@@ -24,7 +24,7 @@ export default function App() {
     }
     const links = {
         github: 'spraveenitpro',
-        email: 'praveen@test.com',
+            email: 'praveen@test.com',
         x: 'spraveenitpro',
     }
     console.log(links)
