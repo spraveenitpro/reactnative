@@ -2,9 +2,10 @@ import { View, Text, StyleSheet, SafeAreaView, Pressable } from 'react-native';
 import Card from '../components/Card';
 import QuestionCard from '../components/QuestionCard';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import CustomButton from '../components/CustomButton';
 
 import questions from '../questions';
-const question = questions[10];
+const question = questions[1];
 
 export default function QuizScreen() {
 	//console.log(question);
@@ -28,6 +29,16 @@ export default function QuizScreen() {
 				)}
 
 				{/*Footer */}
+				<CustomButton
+					title='Hello World'
+					rightIcon={
+						<FontAwesome6
+							name='arrow-right-long'
+							size={16}
+							color='white'
+						/>
+					}
+				/>
 				<Pressable
 					onPress={() => console.warn('pressed 🌶️')}
 					onLongPress={() => console.warn('Long pressed 🤢')}
@@ -37,7 +48,7 @@ export default function QuizScreen() {
 					<FontAwesome6
 						name='arrow-right-long'
 						size={16}
-						color='white    '
+						color='white'
 						style={styles.buttonIcon}
 					/>
 				</Pressable>
