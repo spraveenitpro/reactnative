@@ -1,18 +1,25 @@
-import { Pressable, Text, StyleSheet, View } from 'react-native';
+import {
+	Pressable,
+	Text,
+	StyleSheet,
+	View,
+	PressableProps,
+} from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 type CustomButton = {
 	title: string;
 	rightIcon?: React.ReactNode;
-};
+} & PressableProps;
 
-export default function CustomButton({ title, rightIcon }: CustomButton) {
+export default function CustomButton({
+	title,
+	rightIcon,
+	...pressableProps
+}: CustomButton) {
+	console.log(pressableProps);
 	return (
-		<Pressable
-			onPress={() => console.warn('pressed 🌶️')}
-			onLongPress={() => console.warn('Long pressed 🤢')}
-			style={styles.button}
-		>
+		<Pressable {...pressableProps} style={styles.button}>
 			<Text style={styles.buttonText}>{title}</Text>
 			<View style={styles.rightIcon}>{rightIcon}</View>
 		</Pressable>

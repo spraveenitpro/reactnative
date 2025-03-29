@@ -31,6 +31,9 @@ export default function QuizScreen() {
 				{/*Footer */}
 				<CustomButton
 					title='Hello World'
+					onPress={() => console.warn('🤯 Button pressed')}
+					onLongPress={() => console.warn('😅 Button long pressed')}
+					hitSlop={12}
 					rightIcon={
 						<FontAwesome6
 							name='arrow-right-long'
@@ -39,19 +42,6 @@ export default function QuizScreen() {
 						/>
 					}
 				/>
-				<Pressable
-					onPress={() => console.warn('pressed 🌶️')}
-					onLongPress={() => console.warn('Long pressed 🤢')}
-					style={styles.button}
-				>
-					<Text style={styles.buttonText}>Next</Text>
-					<FontAwesome6
-						name='arrow-right-long'
-						size={16}
-						color='white'
-						style={styles.buttonIcon}
-					/>
-				</Pressable>
 			</View>
 		</SafeAreaView>
 	);

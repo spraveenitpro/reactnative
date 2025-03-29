@@ -13,7 +13,7 @@ export default function AnswerOption({
 }: AnswerOption) {
 	return (
 		<Pressable
-			onPress={() => onPress}
+			onPress={() => onPress(option)}
 			style={[
 				styles.container,
 				isSelected && {
