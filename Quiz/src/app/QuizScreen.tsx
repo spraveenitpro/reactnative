@@ -1,49 +1,76 @@
-import { View, Text, StyleSheet, SafeAreaView, Pressable } from 'react-native';
-import Card from '../components/Card';
+import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import QuestionCard from '../components/QuestionCard';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import Card from '../components/Card';
 import CustomButton from '../components/CustomButton';
-
 import { useQuizContext } from '../providers/QuizProvider';
+import { useEffect } from 'react';
+import { useTimer } from '../hooks/useTimer';
+import LottieView from 'lottie-react-native';
 
 export default function QuizScreen() {
-	// const [questionIndex, setQuestionIndex] = useState(0);
-	// const question = questions[questionIndex];
-	const { question, questionIndex, onNext } = useQuizContext();
-	//console.log(quizData);
+	const {
+		question,
+		questionIndex,
+		onNext,
+		score,
+		totalQuestions,
+		bestScore,
+	} = useQuizContext();
 
-	// const onNext = () => {
-	// 	setQuestionIndex((currValue) => currValue + 1);
-	// 	console.log('🌶️');
-	// };
-	// //console.log(question);
+	const { time, startTimer, clearTimer } = useTimer(20);
+
+	useEffect(() => {
+		startTimer();
+
+		return () => {
+			clearTimer();
+		};
+	}, [question]);
+
+	useEffect(() => {
+		if (time <= 0) {
+			onNext();
+		}
+	}, [time]);
+
 	return (
 		<SafeAreaView style={styles.page}>
 			<View style={styles.container}>
 				{/* Header */}
 				<View>
 					<Text style={styles.title}>
-						Question {questionIndex + 1} / 5
+						Question {questionIndex + 1}/{totalQuestions}
 					</Text>
 				</View>
-				{/*Body */}
+
+				{/* Body */}
 				{question ? (
 					<View>
 						<QuestionCard question={question} />
-						<Text style={styles.time}>20 sec</Text>
+						<Text style={styles.time}>{time} sec</Text>
 					</View>
 				) : (
-					<Card title='Well Done'>
-						<Text>Correct Answers: 3/5</Text>
-					</Card>
+					<>
+						<LottieView
+							style={StyleSheet.absoluteFill}
+							autoPlay
+							loop={false}
+							source={require('../../assets/party.json')}
+						/>
+						<Card title='Well done'>
+							<Text>
+								Correct answers: {score}/{totalQuestions}
+							</Text>
+							<Text>Best score: {bestScore}</Text>
+						</Card>
+					</>
 				)}
 
-				{/*Footer */}
+				{/* Footer */}
 				<CustomButton
 					title='Next'
 					onPress={onNext}
-					onLongPress={onNext}
-					hitSlop={12}
 					rightIcon={
 						<FontAwesome6
 							name='arrow-right-long'
@@ -58,14 +85,14 @@ export default function QuizScreen() {
 }
 
 const styles = StyleSheet.create({
+	page: {
+		flex: 1,
+		backgroundColor: '#FDFEF4',
+	},
 	container: {
 		flex: 1,
 		justifyContent: 'space-between',
 		padding: 20,
-	},
-	page: {
-		flex: 1,
-		backgroundColor: '#FDFEF4',
 	},
 	title: {
 		textAlign: 'center',
@@ -76,22 +103,5 @@ const styles = StyleSheet.create({
 		marginTop: 15,
 		color: '#005055',
 		fontWeight: 'bold',
-	},
-	button: {
-		backgroundColor: '#005055',
-		padding: 20,
-		borderRadius: 100,
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	buttonText: {
-		color: 'white',
-		fontWeight: '500',
-		fontSize: 16,
-		letterSpacing: 1.5,
-	},
-	buttonIcon: {
-		position: 'absolute',
-		right: 19,
 	},
 });
