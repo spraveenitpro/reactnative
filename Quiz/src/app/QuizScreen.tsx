@@ -5,8 +5,6 @@ import Card from '../components/Card';
 import CustomButton from '../components/CustomButton';
 import { useQuizContext } from '../providers/QuizProvider';
 import { useEffect } from 'react';
-import { useTimer } from '../hooks/useTimer';
-import LottieView from 'lottie-react-native';
 
 export default function QuizScreen() {
 	const {
@@ -17,22 +15,6 @@ export default function QuizScreen() {
 		totalQuestions,
 		bestScore,
 	} = useQuizContext();
-
-	const { time, startTimer, clearTimer } = useTimer(20);
-
-	useEffect(() => {
-		startTimer();
-
-		return () => {
-			clearTimer();
-		};
-	}, [question]);
-
-	useEffect(() => {
-		if (time <= 0) {
-			onNext();
-		}
-	}, [time]);
 
 	return (
 		<SafeAreaView style={styles.page}>
@@ -48,16 +30,9 @@ export default function QuizScreen() {
 				{question ? (
 					<View>
 						<QuestionCard question={question} />
-						<Text style={styles.time}>{time} sec</Text>
 					</View>
 				) : (
 					<>
-						<LottieView
-							style={StyleSheet.absoluteFill}
-							autoPlay
-							loop={false}
-							source={require('../../assets/party.json')}
-						/>
 						<Card title='Well done'>
 							<Text>
 								Correct answers: {score}/{totalQuestions}
@@ -97,11 +72,5 @@ const styles = StyleSheet.create({
 	title: {
 		textAlign: 'center',
 		color: '#005055',
-	},
-	time: {
-		textAlign: 'center',
-		marginTop: 15,
-		color: '#005055',
-		fontWeight: 'bold',
 	},
 });

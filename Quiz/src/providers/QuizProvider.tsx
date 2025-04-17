@@ -1,12 +1,8 @@
-import {
-	PropsWithChildren,
-	useContext,
-	useEffect,
-	useState,
-	createContext,
-} from 'react';
+import { PropsWithChildren, useContext, useState, useEffect } from 'react';
+import { createContext } from 'react';
 import questions from '../questions';
 import { Question } from '../types';
+
 type QuizContext = {
 	question?: Question;
 	questionIndex: number;
@@ -37,14 +33,9 @@ export default function QuizProvider({ children }: PropsWithChildren) {
 	const isFinished = questionIndex >= questions.length;
 
 	useEffect(() => {
-		loadBestScore();
-	}, []);
-
-	useEffect(() => {
-		// check if there is a new best score
+		console.log('UseEffect is called 🔥', isFinished);
 		if (isFinished === true && score > bestScore) {
 			setBestScore(score);
-			saveBestScore(score);
 		}
 	}, [isFinished]);
 
@@ -65,26 +56,6 @@ export default function QuizProvider({ children }: PropsWithChildren) {
 		}
 
 		setQuestionIndex((currValue) => currValue + 1);
-	};
-
-	const saveBestScore = async (value: number) => {
-		try {
-			console.log('Save best score: ', value);
-			await AsyncStorage.setItem('best-score', value.toString());
-		} catch (e) {
-			// saving error
-		}
-	};
-
-	const loadBestScore = async () => {
-		try {
-			const value = await AsyncStorage.getItem('best-score');
-			if (value !== null) {
-				setBestScore(Number.parseInt(value));
-			}
-		} catch (e) {
-			// error reading value
-		}
 	};
 
 	return (

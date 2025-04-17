@@ -9,14 +9,15 @@ export default function AnswerOption({ option }: AnswerOption) {
 	const { selectedOption, setSelectedOption } = useQuizContext();
 
 	const isSelected = option === selectedOption;
+
 	return (
 		<Pressable
 			onPress={() => setSelectedOption(option)}
 			style={[
 				styles.container,
 				isSelected && {
-					backgroundColor: '#E1F313',
-					borderColor: '#E1F313',
+					backgroundColor: '#E1F396',
+					borderColor: '#E1F396',
 				},
 			]}
 		>
@@ -27,7 +28,6 @@ export default function AnswerOption({ option }: AnswerOption) {
 
 const styles = StyleSheet.create({
 	container: {
-		//backgroundColor: '#E1F313',
 		borderWidth: 1,
 		borderColor: 'lightgray',
 		padding: 20,
