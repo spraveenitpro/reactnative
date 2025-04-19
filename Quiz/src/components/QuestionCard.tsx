@@ -10,7 +10,7 @@ type QuestionCard = {
 
 export default function QuestionCard({ question }: QuestionCard) {
 	useEffect(() => {
-		console.log('Question Card mounted!! 🤯');
+		console.log('Question Card mounted!! ');
 	});
 
 	useEffect(() => {
