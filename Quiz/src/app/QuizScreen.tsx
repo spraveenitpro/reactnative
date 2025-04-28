@@ -4,7 +4,7 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Card from '../components/Card';
 import CustomButton from '../components/CustomButton';
 import { useQuizContext } from '../providers/QuizProvider';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function QuizScreen() {
 	const {
@@ -15,6 +15,24 @@ export default function QuizScreen() {
 		totalQuestions,
 		bestScore,
 	} = useQuizContext();
+
+	const [time, setTime] = useState(20);
+	useEffect(() => {
+		setTime(20);
+		const interval = setInterval(() => {
+			setTime((t) => t - 1);
+		}, 1000);
+
+		return () => {
+			clearInterval(interval);
+		};
+	}, [question]);
+
+	useEffect(() => {
+		if (time <= 0) {
+			onNext();
+		}
+	}, [time]);
 
 	return (
 		<SafeAreaView style={styles.page}>
@@ -30,6 +48,7 @@ export default function QuizScreen() {
 				{question ? (
 					<View>
 						<QuestionCard question={question} />
+						<Text style={styles.time}> {time} Sec</Text>
 					</View>
 				) : (
 					<>
@@ -72,5 +91,10 @@ const styles = StyleSheet.create({
 	title: {
 		textAlign: 'center',
 		color: '#005055',
+	},
+	time: {
+		fontSize: 13,
+		textAlign: 'center',
+		paddingTop: 25,
 	},
 });

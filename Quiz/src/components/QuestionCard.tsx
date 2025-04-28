@@ -11,15 +11,16 @@ type QuestionCard = {
 export default function QuestionCard({ question }: QuestionCard) {
 	useEffect(() => {
 		console.log('Question Card mounted!! ');
-	});
+
+		return () => {
+			console.log('Question Card Unmounted!! ');
+		};
+	}, []);
 
 	useEffect(() => {
 		console.log('Question Card rendered!! 🤣');
 	});
 
-	useEffect(() => {
-		console.log('Question card rendered no dependency 😅');
-	});
 	return (
 		<Card title={question.title}>
 			<View style={{ gap: 10 }}>
