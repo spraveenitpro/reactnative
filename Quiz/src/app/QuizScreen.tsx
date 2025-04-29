@@ -6,6 +6,29 @@ import CustomButton from '../components/CustomButton';
 import { useQuizContext } from '../providers/QuizProvider';
 import { useEffect, useState } from 'react';
 
+const useTimer = (maxTime: number) => {
+	const [time, setTime] = useState(maxTime);
+
+	const startTimer = () => {
+		setTime(20);
+		const interval = setInterval(() => {
+			setTime((t) => t - 1);
+		}, 1000);
+
+		return () => {
+			clearInterval(interval);
+		};
+	};
+
+	const clearTimer = () => {};
+
+	return {
+		time,
+		startTimer,
+		clearTimer,
+	};
+};
+
 export default function QuizScreen() {
 	const {
 		question,
@@ -16,15 +39,12 @@ export default function QuizScreen() {
 		bestScore,
 	} = useQuizContext();
 
-	const [time, setTime] = useState(20);
-	useEffect(() => {
-		setTime(20);
-		const interval = setInterval(() => {
-			setTime((t) => t - 1);
-		}, 1000);
+	const { time, startTimer } = useTimer(20);
 
+	useEffect(() => {
+		const clear = startTimer();
 		return () => {
-			clearInterval(interval);
+			clear();
 		};
 	}, [question]);
 
