@@ -20,7 +20,7 @@ const useTimer = (maxTime: number) => {
 		};
 	};
 
-	const clearTimer = () => {};
+	const clearTimer = (null) => {};
 
 	return {
 		time,
