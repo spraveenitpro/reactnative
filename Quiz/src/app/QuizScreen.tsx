@@ -4,30 +4,8 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Card from '../components/Card';
 import CustomButton from '../components/CustomButton';
 import { useQuizContext } from '../providers/QuizProvider';
-import { useEffect, useState } from 'react';
-
-const useTimer = (maxTime: number) => {
-	const [time, setTime] = useState(maxTime);
-
-	const startTimer = () => {
-		setTime(20);
-		const interval = setInterval(() => {
-			setTime((t) => t - 1);
-		}, 1000);
-
-		return () => {
-			clearInterval(interval);
-		};
-	};
-
-	const clearTimer = (null) => {};
-
-	return {
-		time,
-		startTimer,
-		clearTimer,
-	};
-};
+import { useEffect, useState, useRef } from 'react';
+import { useTimer } from '../hooks/useTimer';
 
 export default function QuizScreen() {
 	const {
@@ -39,12 +17,12 @@ export default function QuizScreen() {
 		bestScore,
 	} = useQuizContext();
 
-	const { time, startTimer } = useTimer(20);
+	const { time, startTimer, clearTimer } = useTimer(20);
 
 	useEffect(() => {
-		const clear = startTimer();
+		startTimer();
 		return () => {
-			clear();
+			clearTimer();
 		};
 	}, [question]);
 
