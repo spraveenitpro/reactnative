@@ -2,6 +2,7 @@ import { PropsWithChildren, useContext, useState, useEffect } from 'react';
 import { createContext } from 'react';
 import questions from '../questions';
 import { Question } from '../types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type QuizContext = {
 	question?: Question;
@@ -33,9 +34,14 @@ export default function QuizProvider({ children }: PropsWithChildren) {
 	const isFinished = questionIndex >= questions.length;
 
 	useEffect(() => {
+		loadBestScore();
+	}, []);
+
+	useEffect(() => {
 		console.log('UseEffect is called 🔥', isFinished);
 		if (isFinished === true && score > bestScore) {
 			setBestScore(score);
+			saveBestScore(score);
 		}
 	}, [isFinished]);
 
@@ -56,6 +62,27 @@ export default function QuizProvider({ children }: PropsWithChildren) {
 		}
 
 		setQuestionIndex((currValue) => currValue + 1);
+	};
+
+	const saveBestScore = async (value: number) => {
+		console.log('Best score Saving... 🚀 ', value);
+		try {
+			await AsyncStorage.setItem('best-score', value.toString());
+		} catch (error) {
+			console.log('Error saving best score', error);
+		}
+	};
+
+	const loadBestScore = async () => {
+		try {
+			const value = await AsyncStorage.getItem('best-score');
+			console.log('Best score loaded 🚀', value);
+			if (value !== null) {
+				setBestScore(Number.parseInt(value));
+			}
+		} catch (error) {
+			console.log('Error loading best score', error);
+		}
 	};
 
 	return (

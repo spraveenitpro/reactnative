@@ -1,13 +1,5 @@
 import { StatusBar } from 'expo-status-bar'
-import {
-    StyleSheet,
-    Text,
-    View,
-    Image,
-    ScrollView,
-    Button,
-    Linking,
-} from 'react-native'
+import { StyleSheet, Text, View, Image, ScrollView, Button, Linking } from 'react-native'
 import FontAwesome6 from '@expo/vector-icons/FontAwesome5'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import Bolt12 from './Bolt12'
@@ -24,7 +16,7 @@ export default function App() {
     }
     const links = {
         github: 'spraveenitpro',
-            email: 'praveen@test.com',
+        email: 'praveen@test.com',
         x: 'spraveenitpro',
     }
     console.log(links)
@@ -38,21 +30,19 @@ export default function App() {
                     gap: 10,
                 }}
             >
-                {links.github && (
-                    <FontAwesome6 name="github" size={24} color="black" />
-                )}
-                {links.x && (
-                    <FontAwesome6 name="twitter" size={24} color="black" />
-                )}
-                {links.email && (
-                    <FontAwesome6 name="at" size={24} color="black" />
-                )}
+                {links.github && <FontAwesome6 name="github" size={24} color="black" />}
+                {links.x && <FontAwesome6 name="twitter" size={24} color="black" />}
+                {links.email && <FontAwesome6 name="at" size={24} color="black" />}
             </View>
         )
     }
     return (
         <SafeAreaProvider>
-            <SafeAreaView edges={['top']}>
+            <SafeAreaView
+                style={{ flex: 1, backgroundColor: 'black' }}
+                edges={['top', 'bottom']}
+            >
+                <StatusBar style="light" />
                 <ScrollView>
                     <View style={styles.container}>
                         <Image
@@ -72,16 +62,13 @@ export default function App() {
                                 marginTop: -75,
                             }}
                         />
-                        <Text style={{ fontSize: 25, fontWeight: 'bold' }}>
-                            {name}
-                        </Text>
+                        <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{name}</Text>
                         <Text>{getOccupation()}</Text>
 
                         {renderIcons()}
 
                         <Button title="Contact me" onPress={onContactMe} />
                         <Bolt12 />
-                        <StatusBar style="light" />
                     </View>
                 </ScrollView>
             </SafeAreaView>
