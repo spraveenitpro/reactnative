@@ -1,3 +1,4 @@
+import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import QuestionCard from '../components/QuestionCard';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
@@ -6,6 +7,8 @@ import CustomButton from '../components/CustomButton';
 import { useQuizContext } from '../providers/QuizProvider';
 import { useEffect, useState, useRef } from 'react';
 import { useTimer } from '../hooks/useTimer';
+import LottieView from 'lottie-react-native';
+import party from '../../assets/party.json';
 
 export default function QuizScreen() {
 	const {
@@ -50,6 +53,12 @@ export default function QuizScreen() {
 					</View>
 				) : (
 					<>
+						<LottieView
+							style={StyleSheet.absoluteFill}
+							source={party}
+							autoPlay
+						/>
+
 						<Card title='Well done'>
 							<Text>
 								Correct answers: {score}/{totalQuestions}
