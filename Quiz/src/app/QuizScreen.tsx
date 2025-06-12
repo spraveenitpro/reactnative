@@ -57,6 +57,7 @@ export default function QuizScreen() {
 							style={StyleSheet.absoluteFill}
 							source={party}
 							autoPlay
+							loop={false}
 						/>
 
 						<Card title='Well done'>
