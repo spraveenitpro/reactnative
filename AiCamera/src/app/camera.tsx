@@ -5,6 +5,7 @@ import {
   ActivityIndicator,
   StyleSheet,
   Image,
+  Button,
 } from "react-native";
 import { Link, Stack, router } from "expo-router";
 import {
@@ -15,6 +16,9 @@ import {
 } from "expo-camera";
 import { useEffect, useRef, useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
+import path from "path";
+import * as FileSystem from "expo-file-system";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function CameraScreen() {
   const [permission, requestPermission] = useCameraPermissions();
@@ -29,6 +33,18 @@ export default function CameraScreen() {
 
   const camera = useRef<CameraView>(null);
 
+  const saveFile = async (uri: string) => {
+    const filename = path.parse(uri).base;
+    console.log(filename, "******");
+
+    await FileSystem.copyAsync({
+      from: uri,
+      to: FileSystem.documentDirectory + filename,
+    });
+    setPicture(undefined);
+    router.push("/");
+  };
+
   if (!permission?.granted) {
     return <ActivityIndicator size="large" color="royalblue" />;
   }
@@ -40,6 +56,12 @@ export default function CameraScreen() {
           source={{ uri: picture.uri }}
           style={{ width: "100%", flex: 1 }}
         />
+
+        <View style={{ padding: 10 }}>
+          <SafeAreaView edges={["bottom"]}>
+            <Button title="Save" onPress={() => saveFile(picture.uri)} />
+          </SafeAreaView>
+        </View>
         <MaterialIcons
           onPress={() => {
             setPicture(undefined);
