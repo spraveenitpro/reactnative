@@ -21,26 +21,6 @@ import path from "path";
 import * as FileSystem from "expo-file-system";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const allowedExtensions = [".jpg", ".m4v", ".mp4", ".mov"];
-
-async function cleanDocumentDirectory() {
-  try {
-    const files = await FileSystem.readDirectoryAsync(
-      FileSystem.documentDirectory!
-    );
-    for (const file of files) {
-      const lower = file.toLowerCase();
-      if (!allowedExtensions.some((ext) => lower.endsWith(ext))) {
-        await FileSystem.deleteAsync(FileSystem.documentDirectory + file, {
-          idempotent: true,
-        });
-      }
-    }
-  } catch (e) {
-    console.warn("Failed to clean document directory", e);
-  }
-}
-
 export default function CameraScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [micPermission, requestMicPermission] = useMicrophonePermissions();
@@ -78,9 +58,6 @@ export default function CameraScreen() {
     router.push("/");
   };
 
-  useEffect(() => {
-    cleanDocumentDirectory();
-  }, []);
 
   if (!permission || !micPermission) {
     // Permissions are still loading

@@ -4,13 +4,23 @@ import * as FileSystem from "expo-file-system";
 import { MaterialIcons } from "@expo/vector-icons";
 import { getMediaType } from "./utils/media";
 import { ResizeMode, Video } from "expo-av";
+import * as MediaLibrary from "expo-media-library";
 export default function ImageScreen() {
   const { name } = useLocalSearchParams<{ name: string }>();
   const fullUri = (FileSystem.documentDirectory || "") + (name || "");
   const type = getMediaType(fullUri);
+  const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
+
   const onDelete = async () => {
     await FileSystem.deleteAsync(fullUri);
     router.back();
+  };
+  const onSave = async () => {
+    console.log("onSave 👏🏽 ");
+    if (permissionResponse?.status !== "granted") {
+      await requestPermission();
+    }
+    const asset = await MediaLibrary.createAssetAsync(fullUri);
   };
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -26,7 +36,7 @@ export default function ImageScreen() {
                 color="crimson"
               />
               <MaterialIcons
-                onPress={() => {}}
+                onPress={onSave}
                 name="save"
                 size={26}
                 color="dimgray"
