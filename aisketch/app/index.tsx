@@ -77,6 +77,205 @@ export default function Index() {
         return "●";
     }
   };
+
+  function MovableElement({
+    element,
+    onMove,
+    onSelect,
+    isSelected,
+  }: MovableElementProps) {
+    const translateX = useSharedValue(0);
+    const translateY = useSharedValue(0);
+    const scale = useSharedValue(1);
+
+    // Reset translate values when element position changes from database
+    React.useEffect(() => {
+      translateX.value = 0;
+      translateY.value = 0;
+    }, [element.x, element.y, translateX, translateY]);
+
+    const panGesture = Gesture.Pan()
+      .onStart(() => {
+        scale.value = withSpring(1.1);
+        runOnJS(onSelect)(element.id);
+      })
+      .onUpdate((event) => {
+        translateX.value = event.translationX;
+        translateY.value = event.translationY;
+      })
+      .onEnd((event) => {
+        scale.value = withSpring(1);
+        const finalX = element.x + event.translationX;
+        const finalY = element.y + event.translationY;
+        runOnJS(onMove)(element.id, finalX, finalY);
+      });
+
+    const animatedStyle = useAnimatedStyle(() => ({
+      transform: [
+        { translateX: element.x + translateX.value },
+        { translateY: element.y + translateY.value },
+        { scale: scale.value },
+      ],
+    }));
+
+    const renderElement = () => {
+      switch (element.type) {
+        case "rectangle":
+          return (
+            <View
+              style={[
+                styles.rectangleElement,
+                {
+                  backgroundColor: element.color,
+                  width: element.width || 80,
+                  height: element.height || 60,
+                },
+              ]}
+            />
+          );
+        case "circle":
+          return (
+            <View
+              style={[
+                styles.circleElement,
+                {
+                  backgroundColor: element.color,
+                  width: element.width || 60,
+                  height: element.height || 60,
+                },
+              ]}
+            />
+          );
+        case "triangle":
+          return (
+            <View
+              style={[
+                styles.triangleElement,
+                {
+                  borderBottomColor: element.color,
+                  borderBottomWidth: element.height || 60,
+                  borderLeftWidth: (element.width || 60) / 2,
+                  borderRightWidth: (element.width || 60) / 2,
+                },
+              ]}
+            />
+          );
+        case "diamond":
+          return (
+            <View
+              style={[
+                styles.diamondElement,
+                {
+                  backgroundColor: element.color,
+                  width: element.width || 60,
+                  height: element.height || 60,
+                },
+              ]}
+            />
+          );
+        case "star":
+          return (
+            <View style={styles.starContainer}>
+              <Text
+                style={[
+                  styles.starElement,
+                  {
+                    color: element.color,
+                    fontSize: (element.width || 70) * 0.8,
+                  },
+                ]}
+              >
+                ★
+              </Text>
+            </View>
+          );
+        case "hexagon":
+          return (
+            <View style={styles.hexagonContainer}>
+              <Text
+                style={[
+                  styles.hexagonElement,
+                  {
+                    color: element.color,
+                    fontSize: (element.width || 70) * 0.7,
+                  },
+                ]}
+              >
+                ⬡
+              </Text>
+            </View>
+          );
+        default:
+          return null;
+      }
+    };
+
+    return (
+      <GestureDetector gesture={panGesture}>
+        <Animated.View
+          style={[
+            animatedStyle,
+            styles.elementContainer,
+            isSelected && styles.selectedElement,
+          ]}
+        >
+          {renderElement()}
+        </Animated.View>
+      </GestureDetector>
+    );
+  }
+
+  const moveElement = (id: string, x: number, y: number) => {
+    db.transact(db.tx.elements[id].update({ x, y }));
+  };
+
+  const selectElement = (id: string) => {
+    setSelectedElementId(id);
+  };
+
+  const clearCanvas = () => {
+    if (elements.length > 0) {
+      const elementIds = elements.map((el: any) => el.id);
+      db.transact(
+        elementIds.map((elementId: string) =>
+          db.tx.elements[elementId].delete()
+        )
+      );
+    }
+    setSelectedElementId(null);
+  };
+
+  const addElement = (x: number, y: number) => {
+    const elementId = id();
+    let width = 60;
+    let height = 60;
+    if (selectedTool === "rectangle") {
+      width = 100;
+      height = 100;
+    } else if (selectedTool === "star" || selectedTool === "hexagon") {
+      width = 70;
+      height = 70;
+    }
+
+    db.transact(
+      db.tx.elements[elementId].update({
+        type: selectedTool,
+        x,
+        y,
+        color: selectedColor,
+        width,
+        height,
+        createdAt: Date.now().toString(),
+      })
+    );
+    setSelectedElementId(elementId);
+  };
+  const canvasTapGesture = Gesture.Tap().onEnd((event) => {
+    if (event.y < screenHeight - 120) {
+      // add a new element
+      runOnJS(addElement)(event.x, event.y);
+    }
+  });
   return (
     <View
       style={{
@@ -84,6 +283,25 @@ export default function Index() {
         backgroundColor: "white",
       }}
     >
+      <GestureDetector gesture={canvasTapGesture}>
+        <View
+          style={{
+            flex: 1,
+            position: "relative",
+          }}
+        >
+          {elements.map((element: any) => (
+            <MovableElement
+              key={element.id}
+              element={element}
+              onMove={moveElement}
+              onSelect={selectElement}
+              isSelected={element.id === selectedElementId}
+            />
+          ))}
+        </View>
+      </GestureDetector>
+      {/** Toolbar */}
       <View style={styles.toolbar}>
         <View style={styles.topRow}>
           <View style={styles.toolButtons}>
@@ -117,10 +335,7 @@ export default function Index() {
           </View>
         </View>
         <View style={styles.bottomRow}>
-          <TouchableOpacity
-            style={styles.clearButton}
-            //onPress={clearCanvas}
-          >
+          <TouchableOpacity style={styles.clearButton} onPress={clearCanvas}>
             <Text style={styles.clearButtonText}>X</Text>
           </TouchableOpacity>
         </View>
