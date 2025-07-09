@@ -1,0 +1,31 @@
+# Shape Toolbar Mapping
+
+This rule documents the shape toolbar found in [app/index.tsx](mdc:app/index.tsx).
+
+**Shape types and their icons**
+
+- rectangle → ▭
+- circle → ●
+- triangle → ▲
+- diamond → ◆
+- star → ★
+- hexagon → ⬡
+
+**Default element sizes**
+
+- rectangle: 100 × 100
+- star & hexagon: 70 × 70
+- all others: 60 × 60
+
+These guidelines help the AI understand how elements are created, rendered, and manipulated on the canvas.
+
+globs: app/index.tsx
+description: Shape toolbar mapping and element defaults
+
+---
+
+description:
+globs:
+alwaysApply: false
+
+---

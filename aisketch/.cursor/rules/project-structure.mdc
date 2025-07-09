@@ -1,0 +1,17 @@
+# Project Structure Guide
+
+This React Native + Expo project's key entry points are:
+
+- [app/\_layout.tsx](mdc:app/_layout.tsx) – sets up global providers and navigation.
+- [app/index.tsx](mdc:app/index.tsx) – the main screen containing the interactive drawing canvas.
+
+Supporting files/directories:
+
+- Static assets live in [assets/](mdc:assets/)
+- Database utilities: [db.ts](mdc:db.ts)
+- Expo & Metro configuration at the repo root (e.g. [app.json](mdc:app.json), [metro.config.js](mdc:metro.config.js)).
+
+This rule gives future AI assistants a quick roadmap of where to start when exploring the codebase.
+alwaysApply: true
+
+---
