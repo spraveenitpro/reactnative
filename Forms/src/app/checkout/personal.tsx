@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { Link, router } from 'expo-router';
 import CustomButton from '../../components/CustomButton';
+import CustomTextInput from '../../components/CustomTextInput';
 import { useState } from 'react';
 
 export default function PersonalDetailsForm() {
@@ -12,20 +13,30 @@ export default function PersonalDetailsForm() {
 
 	return (
 		<View style={styles.container}>
-			<Text>Personal Details</Text>
-			<TextInput
-				placeholder="Full Name"
+			<CustomTextInput label="Full name" placeholder="Joe dash" />
+			<CustomTextInput label="Address" placeholder="Address!" />
+			<View
 				style={{
-					borderWidth: 1,
-					borderColor: 'gainsboro',
-					padding: 10,
-					borderRadius: 5,
+					flexDirection: 'row',
+					gap: 5,
 				}}
-				value={fullname}
-				//onChangeText={(text) => setFullname(text)}
-				onChangeText={setFullname}
+			>
+				<CustomTextInput
+					label="City"
+					placeholder="Bangalore"
+					containerStyle={{ flex: 1 }}
+				/>
+				<CustomTextInput
+					label="Post Code"
+					placeholder="560043"
+					containerStyle={{ flex: 1 }}
+				/>
+			</View>
+			<CustomTextInput
+				label="Phone number"
+				placeholder="2361231212"
+				inputMode="tel"
 			/>
-
 			<CustomButton title="Next" style={styles.button} onPress={onNext} />
 		</View>
 	);
@@ -34,7 +45,8 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: 'white',
-		padding: 20,
+		padding: 10,
+		gap: 5,
 	},
 	button: {
 		marginTop: 'auto',
