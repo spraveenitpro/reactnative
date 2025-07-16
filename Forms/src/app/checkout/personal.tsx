@@ -1,17 +1,9 @@
-import {
-	View,
-	Text,
-	StyleSheet,
-	TextInput,
-	ScrollView,
-	KeyboardAvoidingView,
-	Platform,
-} from 'react-native';
-import { Link, router } from 'expo-router';
+import { View, StyleSheet } from 'react-native';
+import { router } from 'expo-router';
 import CustomButton from '../../components/CustomButton';
 import CustomTextInput from '../../components/CustomTextInput';
 import { useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import KeyboardAwareScrollView from '../../components/KeyboardAwareScrollView';
 
 export default function PersonalDetailsForm() {
 	const [fullname, setFullname] = useState('');
@@ -21,54 +13,33 @@ export default function PersonalDetailsForm() {
 	};
 
 	return (
-		<KeyboardAvoidingView
-			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-			style={{ flex: 1 }}
-		>
-			<ScrollView
-				style={{ backgroundColor: 'white' }}
-				contentContainerStyle={styles.container}
-				keyboardShouldPersistTaps="handled"
+		<KeyboardAwareScrollView>
+			<CustomTextInput label="Full name" placeholder="Joe dash" />
+			<CustomTextInput label="Address" placeholder="Address!" />
+			<View
+				style={{
+					flexDirection: 'row',
+					gap: 5,
+				}}
 			>
-				<SafeAreaView edges={['bottom', 'top']}>
-					<CustomTextInput label="Full name" placeholder="Joe dash" />
-					<CustomTextInput label="Full name" placeholder="Joe dash" />
-					<CustomTextInput label="Full name" placeholder="Joe dash" />
-					<CustomTextInput label="Full name" placeholder="Joe dash" />
-					<CustomTextInput label="Full name" placeholder="Joe dash" />
-					<CustomTextInput label="Full name" placeholder="Joe dash" />
-					<CustomTextInput label="Full name" placeholder="Joe dash" />
-					<CustomTextInput label="Address" placeholder="Address!" />
-					<View
-						style={{
-							flexDirection: 'row',
-							gap: 5,
-						}}
-					>
-						<CustomTextInput
-							label="City"
-							placeholder="Bangalore"
-							containerStyle={{ flex: 1 }}
-						/>
-						<CustomTextInput
-							label="Post Code"
-							placeholder="560043"
-							containerStyle={{ flex: 1 }}
-						/>
-					</View>
-					<CustomTextInput
-						label="Phone number"
-						placeholder="2361231212"
-						inputMode="tel"
-					/>
-					<CustomButton
-						title="Next"
-						style={styles.button}
-						onPress={onNext}
-					/>
-				</SafeAreaView>
-			</ScrollView>
-		</KeyboardAvoidingView>
+				<CustomTextInput
+					label="City"
+					placeholder="Bangalore"
+					containerStyle={{ flex: 1 }}
+				/>
+				<CustomTextInput
+					label="Post Code"
+					placeholder="560043"
+					containerStyle={{ flex: 1 }}
+				/>
+			</View>
+			<CustomTextInput
+				label="Phone number"
+				placeholder="2361231212"
+				inputMode="tel"
+			/>
+			<CustomButton title="Next" style={styles.button} onPress={onNext} />
+		</KeyboardAwareScrollView>
 	);
 }
 const styles = StyleSheet.create({
