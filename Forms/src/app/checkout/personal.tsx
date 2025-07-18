@@ -4,9 +4,11 @@ import CustomButton from '../../components/CustomButton';
 import CustomTextInput from '../../components/CustomTextInput';
 import { useState } from 'react';
 import KeyboardAwareScrollView from '../../components/KeyboardAwareScrollView';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
 export default function PersonalDetailsForm() {
-	const [fullname, setFullname] = useState('');
+	// const [fullname, setFullname] = useState('');
+	const { handleSubmit } = useForm();
 	const onNext = () => {
 		console.log(fullname);
 		router.push('/checkout/payment');
@@ -38,7 +40,11 @@ export default function PersonalDetailsForm() {
 				placeholder="2361231212"
 				inputMode="tel"
 			/>
-			<CustomButton title="Next" style={styles.button} onPress={onNext} />
+			<CustomButton
+				title="Next"
+				style={styles.button}
+				onPress={handleSubmit(onNext)}
+			/>
 		</KeyboardAwareScrollView>
 	);
 }
