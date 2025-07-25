@@ -13,6 +13,20 @@ import { useState } from 'react';
 import CustomTextInput from '../../components/CustomTextInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import KeyboardAwareScrollView from '../../components/KeyboardAwareScrollView';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+
+const PersonalInfoSchema = z.object({
+	fullName: z
+		.string({ message: 'Full name is required!' })
+		.min(1, { message: 'Full name must be longer than 1' }),
+	address: z.string().min(1, { message: 'Please provide your address!' }),
+	city: z.string().min(1, { message: 'City is required!' }),
+	postcode: z.string().min(1, { message: 'Postal code is required!' }),
+	phone: z.string().min(1, { message: 'Phone is required!' }),
+});
+
+type PersonalInfo = z.infer<typeof PersonalInfoSchema>;
 
 import {
 	useForm,
@@ -22,11 +36,13 @@ import {
 } from 'react-hook-form';
 
 export default function PersonalDetailsForm() {
-	const form = useForm();
+	const form = useForm<PersonalInfo>({
+		resolver: zodResolver(PersonalInfoSchema),
+	});
 
 	console.log('Errors: ', form.formState.errors);
 
-	const onNext: SubmitHandler<any> = (data) => {
+	const onNext: SubmitHandler<PersonalInfo> = (data) => {
 		// the data is Valid
 		console.log(data);
 
@@ -57,7 +73,7 @@ export default function PersonalDetailsForm() {
 						containerStyle={{ flex: 1 }}
 					/>
 					<CustomTextInput
-						name="postCode"
+						name="postcode"
 						label="Post code"
 						placeholder="1234"
 						containerStyle={{ flex: 1 }}
@@ -65,7 +81,7 @@ export default function PersonalDetailsForm() {
 				</View>
 
 				<CustomTextInput
-					name="phoneNumber"
+					name="phone"
 					label="Phone number"
 					placeholder="601234123123"
 					inputMode="tel"
